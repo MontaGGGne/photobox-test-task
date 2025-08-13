@@ -1,0 +1,7 @@
+Django
+psycopg2
+Pillow
+celery
+pika
+rabbitmq
+python-dotenv
