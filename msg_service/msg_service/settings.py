@@ -24,6 +24,18 @@ DB_NAME = os.getenv('DB_NAME')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+SENDER_NUMBER = os.getenv('SENDER_NUMBER')
+SENDER_EMAIL = os.getenv('SENDER_EMAIL')
+
+RMQ_HOST = os.getenv('RMQ_HOST')
+RMQ_PORT = os.getenv('RMQ_PORT')
+RMQ_USER = os.getenv('RMQ_USER')
+RMQ_PASSWORD = os.getenv('RMQ_PASSWORD')
+
+CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/'
+CELERY_RESULT_BACKEND = 'rpc://'
+
 ################################## Base Django settings ##################################
 from pathlib import Path
 
@@ -52,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'msg_delivery'
 ]
 
 MIDDLEWARE = [

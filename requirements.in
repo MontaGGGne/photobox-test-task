@@ -1,7 +1,9 @@
 Django
+djangorestframework
 psycopg2
 Pillow
 celery
-pika
 rabbitmq
+twilio
+python-telegram-bot
 python-dotenv
