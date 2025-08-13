@@ -19,10 +19,10 @@ load_dotenv()
 import os
 
 DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_USER')
-DB_NAME = os.getenv('DB_USER')
-DB_HOST = os.getenv('DB_USER')
-DB_PORT = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
 
 ################################## Base Django settings ##################################
 from pathlib import Path
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'msg_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.posgresql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
