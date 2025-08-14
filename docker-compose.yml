@@ -57,9 +57,11 @@ services:
       retries: 3
   
   django-app:
+    tty: true
     container_name: django-app
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: python ./msg_service/manage.py runserver 0.0.0.0:8000
+    command: bash -c "python ./msg_service/manage.py makemigrations && python ./msg_service/manage.py migrate && python ./msg_service/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -67,20 +69,21 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmqServer
+      - rabbitmq-server
       - docker-postgres
 
   celery:
     container_name: celery
     build: .
-    command: celery -A msg_service worker -l info -P threads
+    command: bash -c "cd ./msg_service && celery -A msg_service worker -l info -P threads"
     volumes:
       - .:/app
     env_file:
       - .env
     depends_on:
-      - rabbitmqServer
+      - rabbitmq-server
       - docker-postgres
+      - django-app
 
 volumes:
   postgres-db-volume:

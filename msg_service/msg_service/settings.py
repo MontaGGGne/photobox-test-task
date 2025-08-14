@@ -36,8 +36,8 @@ RMQ_PORT = os.getenv('RMQ_PORT')
 RMQ_USER = os.getenv('RMQ_USER')
 RMQ_PASSWORD = os.getenv('RMQ_PASSWORD')
 
-# CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/%2F'
-CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@localhost:{RMQ_PORT}/%2F'
+CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/%2F'
+# CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@localhost:{RMQ_PORT}/%2F'
 CELERY_RESULT_BACKEND = 'rpc://'
 
 EMAIL_USE_TLS = True
@@ -62,7 +62,7 @@ SECRET_KEY = 'django-insecure-hron*4^cma+(9zf9g+3t0y4bl)sruaaq5^nl9-r(_t3(5&lrt4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -74,7 +74,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'msg_delivery'
+    'msg_delivery',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [

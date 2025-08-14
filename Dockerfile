@@ -8,3 +8,6 @@ RUN pip-compile
 RUN pip-sync
 
 COPY . .
+
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
