@@ -41,8 +41,8 @@ class MsgSender():
 
     def send_telegram(self):
         try:
-            requests.post(
-                f'https://api.telegram.org/{settings.BOT_TOKEN}/sendMessage',
+            requests.get(
+                f'https://api.telegram.org/bot{settings.BOT_TOKEN}/sendMessage',
                 json={'chat_id': self.__user.telegram_id, 'text': self.__message}
             )
             return True
