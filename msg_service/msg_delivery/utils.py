@@ -2,6 +2,7 @@ import requests
 import logging
 from django.core.mail import EmailMessage
 from django.conf import settings
+from twilio.rest import Client
 
 
 logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
@@ -26,9 +27,9 @@ class MsgSender():
 
     def send_sms(self):
         try:
-            from twilio.rest import Client
-            client = Client("ACCOUNT_SID", "AUTH_TOKEN")
-            client.messages.create(
+            twilio_client = Client(settings.TWILIO_ACCOUNT_SID,
+                                   settings.TWILIO_AUTH_TOKEN)
+            twilio_client.messages.create(
                 body=self.__message,
                 from_=settings.SENDER_NUMBER,
                 to=self.__user.phone

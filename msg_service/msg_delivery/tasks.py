@@ -12,8 +12,8 @@ def send_notification(self, user_id, message):
     
     if user.email and sender.send_email():
         return
-    # elif user.phone and sender.send_sms():
-    #     return
+    elif user.phone and sender.send_sms():
+        return
     elif user.telegram_id and sender.send_telegram():
         return
     

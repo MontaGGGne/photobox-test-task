@@ -28,6 +28,9 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 SENDER_NUMBER = os.getenv('SENDER_NUMBER')
 SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+
 RMQ_HOST = os.getenv('RMQ_HOST')
 RMQ_PORT = os.getenv('RMQ_PORT')
 RMQ_USER = os.getenv('RMQ_USER')
