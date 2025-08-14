@@ -1,6 +1,11 @@
 import requests
-from django.core.mail import send_mail
+import logging
+from django.core.mail import EmailMessage
 from django.conf import settings
+
+
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
+                    format="%(asctime)s %(levelname)s %(message)s")
 
 
 class MsgSender():
@@ -10,15 +15,13 @@ class MsgSender():
 
     def send_email(self):
         try:
-            send_mail(
-                subject='Уведомление',
-                message=self.__message,
-                from_email=settings.SENDER_EMAIL,
-                recipient_list=[self.__user.email],
-                fail_silently=False
-            )
+            email = EmailMessage(subject='Уведомление',
+                                 body=self.__message,
+                                 to=[self.__user.email])
+            email.send()
             return True
-        except Exception:
+        except Exception as e:
+            logging.error(f"Fail send email: {repr(e)}")
             return False
 
     def send_sms(self):
@@ -31,7 +34,8 @@ class MsgSender():
                 to=self.__user.phone
             )
             return True
-        except Exception:
+        except Exception as e:
+            logging.error(f"Fail send sms: {repr(e)}")
             return False
 
     def send_telegram(self):
@@ -41,5 +45,6 @@ class MsgSender():
                 json={'chat_id': self.__user.telegram_id, 'text': self.__message}
             )
             return True
-        except Exception:
+        except Exception as e:
+            logging.error(f"Fail send telegram: {repr(e)}")
             return False

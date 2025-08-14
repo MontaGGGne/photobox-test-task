@@ -33,8 +33,15 @@ RMQ_PORT = os.getenv('RMQ_PORT')
 RMQ_USER = os.getenv('RMQ_USER')
 RMQ_PASSWORD = os.getenv('RMQ_PASSWORD')
 
-CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/%2F'
+# CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/%2F'
+CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@localhost:{RMQ_PORT}/%2F'
 CELERY_RESULT_BACKEND = 'rpc://'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 ################################## Base Django settings ##################################
 from pathlib import Path

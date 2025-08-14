@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
     ports:
-      - 5432:${DB_PORT}
+      - 5432:5432
     healthcheck:
       test: "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
       interval: 5s
@@ -33,8 +33,8 @@ services:
     volumes:
       - pgadmin-volume:/var/lib/pgadmin
   
-  rabbitmq:
-    container_name: rabbitmq
+  rabbitmqServer:
+    container_name: rabbitmqServer
     image: rabbitmq:3.10.7-management
     hostname: rabbitmqhost
     restart: always

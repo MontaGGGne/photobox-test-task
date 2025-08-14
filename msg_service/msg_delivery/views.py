@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
-from .celery_tasks import dispatch_notifications
+from .tasks import send_notification
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -31,7 +31,7 @@ class NotificationSendView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            dispatch_notifications.delay(user.id, message)
+            send_notification.delay(user.id, message)
             return Response(
                 {'status': 'Notification sent'},
                 status=status.HTTP_202_ACCEPTED
