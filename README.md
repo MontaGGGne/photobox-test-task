@@ -12,6 +12,14 @@ docker compose build --no-cache
 docker compose up
 ```
 
+## Send message
+
+```curl
+curl -X POST http://localhost:8000/api/users/1/send/ \
+-H "Content-Type: application/json" \
+-d '{"message": "Hello World!"}'
+```
+
 ## Create user
 
 ```curl
