@@ -33,7 +33,7 @@ RMQ_PORT = os.getenv('RMQ_PORT')
 RMQ_USER = os.getenv('RMQ_USER')
 RMQ_PASSWORD = os.getenv('RMQ_PASSWORD')
 
-CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/'
+CELERY_BROKER_URL = f'amqp://{RMQ_USER}:{RMQ_PASSWORD}@{RMQ_HOST}:{RMQ_PORT}/%2F'
 CELERY_RESULT_BACKEND = 'rpc://'
 
 ################################## Base Django settings ##################################

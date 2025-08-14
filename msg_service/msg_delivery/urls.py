@@ -1,6 +1,12 @@
 from django.urls import path
-from .views import NotificationView
+from .views import (
+    UserListCreateView,
+    UserRetrieveUpdateDestroyView,
+    NotificationSendView
+)
 
 urlpatterns = [
-    path('send/', NotificationView.as_view(), name='send'),
+    path('users/', UserListCreateView.as_view(), name='user-list-create'),
+    path('users/<int:pk>/', UserRetrieveUpdateDestroyView.as_view(), name='user-info'),
+    path('users/<int:user_id>/send/', NotificationSendView.as_view(), name='send-message'),
 ]

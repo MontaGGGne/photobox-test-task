@@ -33,10 +33,10 @@ services:
     volumes:
       - pgadmin-volume:/var/lib/pgadmin
   
-  rabbitmqServer:
-    container_name: rabbitmqServer
+  rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3.10.7-management
-    hostname: ${RMQ_HOST}
+    hostname: rabbitmqhost
     restart: always
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
