@@ -1,10 +1,10 @@
 version: "3"
 
 services:
-
-  postgres:
-    container_name: postgres-fastapi-auth
-    image: postgres:13
+  docker-postgres:
+    container_name: docker-postgres
+    restart: always
+    image: postgres:14
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -17,20 +17,74 @@ services:
       test: "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
       interval: 5s
       retries: 5
-    restart: always
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin4_container
+    container_name: pgadmin4-container
     restart: always
     ports:
       - "8888:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${DB_USER}@domain-name.com
       PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - docker-postgres
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - pgadmin-volume:/var/lib/pgadmin
+  
+  rabbitmq-server:
+    container_name: rabbitmq-server
+    image: rabbitmq:3.10.7-management
+    restart: always
+    hostname: rabbitmqhost
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+    depends_on:
+      - docker-postgres
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq/log/:/var/log/rabbitmq/
+    ports:
+      - 5672:5672    #amqp
+      - 15672:15672  #http
+      - 15692:15692  #prometheus
+    healthcheck:
+      test: rabbitmq-diagnostics -q status && rabbitmq-diagnostics -q check_local_alarms
+      interval: 30s
+      timeout: 3s
+      retries: 3
+  
+  django-app:
+    container_name: django-app
+    restart: always
+    build: .
+    command: bash -c "python ./msg_service/manage.py migrate && python ./msg_service/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq-server
+      - docker-postgres
+
+  celery:
+    container_name: celery
+    restart: always
+    build: .
+    command: bash -c "cd ./msg_service && celery -A msg_service worker -l info -P threads"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq-server
+      - docker-postgres
+      - django-app
 
 volumes:
   postgres-db-volume:
-  pgadmin-data:
+  pgadmin-volume:
